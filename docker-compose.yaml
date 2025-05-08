@@ -1,14 +1,24 @@
+# nginx proxy address - http://172.17.0.1:59054
+
 name: microbin
+x-logging: &default-logging
+  options:
+    max-size: '5m'
+    max-file: '1'
+  driver: json-file
+
 services:
-  server:
+  app:
     image: danielszabo99/microbin:latest
-    container_name: microbin
+    container_name: microbin-app
     hostname: ${BASE_HOST_NAME:-$HOSTNAME}
     restart: always
     pull_policy: always
+    logging: *default-logging
     environment:
-      - MICROBIN_ADMIN_USERNAME=${APP_ADMIN_USER:-admin}
-      - MICROBIN_ADMIN_PASSWORD=${APP_ADMIN_PASS:-password}
+      - TZ=${TZ:-America/New_York}
+      - MICROBIN_ADMIN_USERNAME=${APP_ADMIN_USER:-administrator}
+      - MICROBIN_ADMIN_PASSWORD=${APP_ADMIN_PASS:-Izm7HN7kyqu6qJz2bZbmCbxaGWhGcyRZ}
       - MICROBIN_EDITABLE=false
       - MICROBIN_GC_DAYS=365
       - MICROBIN_FOOTER_TEXT=${APP_ORG_NAME} microbin service
@@ -41,7 +51,7 @@ services:
       - MICROBIN_LIST_SERVER=true
       - MICROBIN_DISABLE_TELEMETRY=false
     ports:
-      - 172.17.0.1:59054:8080
+      - '172.17.0.1:59054:8080'
     volumes:
       - /var/lib/srv/$USER/docker/danielszabo99/microbin/latest/rootfs/data/microbin:/app/microbin_data
     networks:
