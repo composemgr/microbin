@@ -1,0 +1,63 @@
+# nginx proxy address - http://172.17.0.1:59054
+
+name: microbin
+x-logging: &default-logging
+  options:
+    max-size: '5m'
+    max-file: '1'
+  driver: json-file
+
+services:
+  app:
+    image: danielszabo99/microbin:latest
+    container_name: microbin-app
+    hostname: ${BASE_HOST_NAME:-$HOSTNAME}
+    restart: always
+    pull_policy: always
+    logging: *default-logging
+    environment:
+      - TZ=${TZ:-America/New_York}
+      - MICROBIN_ADMIN_USERNAME=${APP_ADMIN_USER:-administrator}
+      - MICROBIN_ADMIN_PASSWORD=${APP_ADMIN_PASS:-Izm7HN7kyqu6qJz2bZbmCbxaGWhGcyRZ}
+      - MICROBIN_EDITABLE=false
+      - MICROBIN_GC_DAYS=365
+      - MICROBIN_FOOTER_TEXT=${APP_ORG_NAME} microbin service
+      - MICROBIN_HIDE_FOOTER=false
+      - MICROBIN_HIDE_HEADER=false
+      - MICROBIN_HIDE_LOGO=false
+      - MICROBIN_NO_LISTING=false
+      - MICROBIN_HIGHLIGHTSYNTAX=true
+      - MICROBIN_PRIVATE=true
+      - MICROBIN_SHORT_PATH=https://${BASE_HOST_NAME:-$HOSTNAME}
+      - MICROBIN_PUBLIC_PATH=https://${BASE_HOST_NAME:-$HOSTNAME}
+      - MICROBIN_CUSTOM_CSS=https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css
+      - MICROBIN_READONLY=true
+      - MICROBIN_SHOW_READ_STATS=true
+      - MICROBIN_TITLE=${APP_ORG_NAME} MicroBin
+      - MICROBIN_ENABLE_BURN_AFTER=true
+      - MICROBIN_DEFAULT_BURN_AFTER=0
+      - MICROBIN_WIDE=false
+      - MICROBIN_QR=true
+      - MICROBIN_ETERNAL_PASTA=true
+      - MICROBIN_ENABLE_READONLY=true
+      - MICROBIN_DEFAULT_EXPIRY=never
+      - MICROBIN_NO_FILE_UPLOAD=false
+      - MICROBIN_HASH_IDS=true
+      - MICROBIN_ENCRYPTION_CLIENT_SIDE=true
+      - MICROBIN_ENCRYPTION_SERVER_SIDE=true
+      - MICROBIN_MAX_FILE_SIZE_ENCRYPTED_MB=2048
+      - MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB=2048
+      - MICROBIN_DISABLE_UPDATE_CHECKING=false
+      - MICROBIN_LIST_SERVER=true
+      - MICROBIN_DISABLE_TELEMETRY=false
+    ports:
+      - '172.17.0.1:59054:8080'
+    volumes:
+      - './rootfs/data/microbin:/app/microbin_data'
+    networks:
+      - microbin
+
+networks:
+  microbin:
+    name: microbin
+    external: false
