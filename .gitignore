@@ -105,6 +105,9 @@ $RECYCLE.BIN/
 # Ignore the file: app.env
 app.env
 
+# ignore the default dotenv file
+default.env
+
 # Ignore the file: compose.default.yaml
 compose.default.yaml
 
