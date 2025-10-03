@@ -15,16 +15,17 @@ services:
     restart: always
     pull_policy: always
     logging: *default-logging
+    env_file: default.env
     environment:
       - TZ=${TZ:-America/New_York}
       - MICROBIN_ADMIN_USERNAME=${APP_ADMIN_USER:-administrator}
       - MICROBIN_ADMIN_PASSWORD=${APP_ADMIN_PASS:-Izm7HN7kyqu6qJz2bZbmCbxaGWhGcyRZ}
       - MICROBIN_EDITABLE=false
       - MICROBIN_GC_DAYS=365
-      - MICROBIN_FOOTER_TEXT=${APP_ORG_NAME} microbin service
+      - MICROBIN_FOOTER_TEXT=${APP_ORG_NAME:-MicroBin Service}
       - MICROBIN_HIDE_FOOTER=false
       - MICROBIN_HIDE_HEADER=false
-      - MICROBIN_HIDE_LOGO=false
+      - MICROBIN_HIDE_LOGO=true
       - MICROBIN_NO_LISTING=false
       - MICROBIN_HIGHLIGHTSYNTAX=true
       - MICROBIN_PRIVATE=true
@@ -33,7 +34,7 @@ services:
       - MICROBIN_CUSTOM_CSS=https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css
       - MICROBIN_READONLY=true
       - MICROBIN_SHOW_READ_STATS=true
-      - MICROBIN_TITLE=${APP_ORG_NAME} MicroBin
+      - MICROBIN_TITLE=${APP_ORG_NAME:-MicroBin}
       - MICROBIN_ENABLE_BURN_AFTER=true
       - MICROBIN_DEFAULT_BURN_AFTER=0
       - MICROBIN_WIDE=false
@@ -47,7 +48,7 @@ services:
       - MICROBIN_ENCRYPTION_SERVER_SIDE=true
       - MICROBIN_MAX_FILE_SIZE_ENCRYPTED_MB=2048
       - MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB=2048
-      - MICROBIN_DISABLE_UPDATE_CHECKING=false
+      - MICROBIN_DISABLE_UPDATE_CHECKING=true
       - MICROBIN_LIST_SERVER=true
       - MICROBIN_DISABLE_TELEMETRY=false
     ports:

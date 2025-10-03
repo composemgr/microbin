@@ -107,3 +107,10 @@ app.env
 
 # Ignore the file: compose.default.yaml
 compose.default.yaml
+
+# Ignore compose.yml
+compose.yml
+
+# Ignore ./rootfs
+rootfs/**
+
