@@ -113,6 +113,7 @@ compose.default.yaml
 
 # Ignore compose.yml
 compose.yml
+compose.yaml
 
 # Ignore ./rootfs
 rootfs/**
