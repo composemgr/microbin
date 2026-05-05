@@ -41,8 +41,8 @@ BASE_DOMAIN_NAME=
 
 ## 📂 Volumes
 
-- `./rootfs/config/microbin` - Configuration files
-- `./rootfs/data/microbin` - Application data
+- `./volumes/config/microbin` - Configuration files
+- `./volumes/data/microbin` - Application data
 
 ## 🔐 Security
 
