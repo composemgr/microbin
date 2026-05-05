@@ -90,7 +90,7 @@ services:
     ports:
       - '172.17.0.1:59054:8080'
     volumes:
-      - './rootfs/data/microbin:/app/microbin_data'
+      - './volumes/data/microbin:/app/microbin_data'
     networks:
       - microbin
 
