@@ -17,6 +17,8 @@ services:
     logging: *default-logging
     environment:
       - TZ=${TZ:-America/New_York}
+      - CONTAINER_NAME=microbin-app
+      - HOSTNAME=${BASE_HOST_NAME:-$HOSTNAME}
       - MICROBIN_ADMIN_USERNAME=${APP_ADMIN_USER:-administrator}
       - MICROBIN_ADMIN_PASSWORD=${APP_ADMIN_PASS:-changeme_admin_password}
       - MICROBIN_EDITABLE=false
@@ -56,8 +58,30 @@ services:
       - './volumes/data/microbin:/app/microbin_data'
     networks:
       - microbin
+      - proxy
+      - cloudflare
+    labels:
+      - 'traefik.enable=true'
+      - 'cloudflare.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'cloudflare.service=http://microbin-app:8080'
+      - 'cloudflare.hostname=microbin.${CLOUDFLARE_ZONE_NAME:-}'
+      - 'traefik.http.routers.microbin-app.entrypoints=http'
+      - 'traefik.http.routers.microbin-app-secure.tls=true'
+      - 'traefik.http.routers.microbin-app.rule=Host($(${BASE_HOST_NAME:-$HOSTNAME}))'
+      - 'traefik.http.middlewares.microbin-app-https-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.routers.microbin-app.middlewares=microbin-app-https-redirect'
+      - 'traefik.http.routers.microbin-app-secure.entrypoints=https'
+      - 'traefik.http.routers.microbin-app-secure.rule=Host($(${BASE_HOST_NAME:-$HOSTNAME}))'
+      - 'traefik.http.routers.microbin-app-secure.tls.certresolver=cloudflare'
+      - 'traefik.http.routers.microbin-app-secure.service=microbin-app'
+      - 'traefik.http.services.microbin-app.loadbalancer.server.port=8080'
 
 networks:
   microbin:
     name: microbin
     external: false
+  proxy:
+    external: true
+  cloudflare:
+    external: true
